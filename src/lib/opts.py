@@ -118,7 +118,8 @@ class opts(object):
                              default='../videos/MOT16-03.mp4',
                              help='path to the input video')
     self.parser.add_argument('--output-format', type=str, default='video', help='video or text')
-    self.parser.add_argument('--output-root', type=str, default='../demos', help='expected output root path')
+    self.parser.add_argument('--output-root',  dest='output_root', type=str, default='../demos', help='expected output '
+                                                                                                  'root path')
 
     # mot
     self.parser.add_argument('--data_cfg', type=str,
@@ -192,7 +193,8 @@ class opts(object):
       opt.chunk_sizes.append(slave_chunk_size)
     print('training chunk_sizes:', opt.chunk_sizes)
 
-    opt.root_dir = os.path.join(os.path.dirname(__file__), '..', '..')
+    # opt.root_dir = os.path.join(os.path.dirname(__file__), '..', '..')
+    opt.root_dir = opt.output_root
     opt.exp_dir = os.path.join(opt.root_dir, 'exp', opt.task)
     opt.save_dir = os.path.join(opt.exp_dir, opt.exp_id)
     opt.debug_dir = os.path.join(opt.save_dir, 'debug')

@@ -10,7 +10,7 @@ import time
 import os
 import cv2
 
-from sklearn import metrics
+# from sklearn import metrics
 from scipy import interpolate
 import numpy as np
 from torchvision.transforms import transforms as T
@@ -53,7 +53,7 @@ def merge_outputs(opt, detections):
 def test_det(
         opt,
         batch_size=12,
-        img_size=(1088, 608),
+        img_size=(128, 128),
         iou_thres=0.5,
         print_interval=40,
 ):
@@ -89,7 +89,10 @@ def test_det(
         t = time.time()
         #seen += batch_size
 
-        output = model(imgs.cuda())[-1]
+        if opt.gpus[0] >= 0:
+            output = model(imgs.cuda())[-1]
+        else:
+            output = model(imgs)[-1]
         origin_shape = shapes[0]
         width = origin_shape[1]
         height = origin_shape[0]
