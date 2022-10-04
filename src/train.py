@@ -2,6 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import datetime
+
 import _init_paths
 
 import os
@@ -16,6 +18,21 @@ from models.data_parallel import DataParallel
 from logger import Logger
 from datasets.dataset_factory import get_dataset
 from trains.train_factory import train_factory
+
+
+def get_ymd():
+    now = datetime.datetime.now()
+    year = now.year
+    month = str(now.month)
+    day = str(now.day)
+    hour = str(now.hour)
+    if len(month) != 2:
+        month = '0' + month
+    if len(day) != 2:
+        day = '0' + day
+    if len(hour) != 2:
+        hour = '0' + hour
+    return '{}{}{}{}'.format(year, month, day, hour)
 
 
 def main(opt):
@@ -76,7 +93,7 @@ def main(opt):
             save_model(os.path.join(opt.save_dir, 'model_{}.pth'.format(mark)),
                        epoch, model, optimizer)
         else:
-            save_model(os.path.join(opt.save_dir, 'model_last.pth'),
+            save_model(os.path.join(opt.save_dir, f'model_last{get_ymd()}.pth'),
                        epoch, model, optimizer)
         logger.write('\n')
         if epoch in opt.lr_step:
