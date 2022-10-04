@@ -108,6 +108,7 @@ def eval_seq(opt, dataloader, data_type, result_filename, save_dir=None, show_im
                                           fps=1. / timer.average_time)
         if show_image:
             cv2.imshow('online_im', online_im)
+            cv2.waitKey(1)
         if save_dir is not None:
             cv2.imwrite(os.path.join(save_dir, '{:05d}.jpg'.format(frame_id)), online_im)
         frame_id += 1
@@ -118,7 +119,7 @@ def eval_seq(opt, dataloader, data_type, result_filename, save_dir=None, show_im
 
 
 def main(opt, data_root='./images/train', det_root=None, seqs=('',), exp_name='demo',
-         save_images=False, save_videos=False, show_image=True):
+         save_images=False, save_videos=False, show_image=True, use_cuda=True):
     logger.setLevel(logging.INFO)
     result_root = os.path.join(data_root, 'results', exp_name)
     mkdir_if_missing(result_root)
@@ -136,7 +137,7 @@ def main(opt, data_root='./images/train', det_root=None, seqs=('',), exp_name='d
         meta_info = open(os.path.join(data_root, seq, 'seqinfo.ini')).read()
         frame_rate = int(meta_info[meta_info.find('frameRate') + 10:meta_info.find('\nseqLength')])
         nf, ta, tc = eval_seq(opt, dataloader, data_type, result_filename,
-                              save_dir=output_dir, show_image=show_image, frame_rate=frame_rate)
+                              save_dir=output_dir, show_image=show_image, frame_rate=frame_rate, use_cuda=use_cuda)
         n_frame += nf
         timer_avgs.append(ta)
         timer_calls.append(tc)
@@ -147,7 +148,8 @@ def main(opt, data_root='./images/train', det_root=None, seqs=('',), exp_name='d
         accs.append(evaluator.eval_file(result_filename))
         if save_videos:
             output_video_path = osp.join(output_dir, '{}.mp4'.format(seq))
-            cmd_str = 'ffmpeg -f image2 -i {}/%05d.jpg -c:v copy {}'.format(output_dir, output_video_path)
+            cmd_str = 'C:\\soft\\ffmpeg\\bin\\ffmpeg.exe -f image2 -i {}/%05d.jpg -c:v copy {}'.format(output_dir,
+                                                                                                    output_video_path)
             os.system(cmd_str)
     timer_avgs = np.asarray(timer_avgs)
     timer_calls = np.asarray(timer_calls)
@@ -171,13 +173,17 @@ def main(opt, data_root='./images/train', det_root=None, seqs=('',), exp_name='d
 if __name__ == '__main__':
     os.environ['CUDA_VISIBLE_DEVICES'] = '1'
     opt = opts().init()
-    data_root = os.path.join(opt.data_dir, 'images/train')
+    data_root = os.path.join(opt.data_dir, 'train')
+    print(f'data_root={data_root}')
+
 
     # seqs = [seq.strip() for seq in seqs_str.split()]
 
     main(opt,
          data_root=data_root,
          exp_name='potato',
-         show_image=False,
+         show_image=True,
          save_images=False,
-         save_videos=False)
+         save_videos=False,
+         seqs=('potato',),
+         use_cuda=False)
