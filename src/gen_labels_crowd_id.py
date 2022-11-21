@@ -62,7 +62,7 @@ if __name__ == '__main__':
     label_val = f'{root_path}/labels_with_ids/val'
     ann_val = f'{root_path}/annotation_val.odgt'
     data_train = f'{root_path}/images/train'
-    label_train = f'{root_path}/crowdhuman/labels_with_ids/train'
+    label_train = f'{root_path}/labels_with_ids/train'
     ann_train = f'{root_path}/annotation_train.odgt'
     gen_labels_crowd(data_train, label_train, ann_train)
     gen_labels_crowd(data_val, label_val, ann_val)
