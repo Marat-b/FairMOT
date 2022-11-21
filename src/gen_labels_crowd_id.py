@@ -46,6 +46,8 @@ def gen_labels_crowd(data_root, label_root, ann_root):
                     tid_curr, x / img_width, y / img_height, w / img_width, h / img_height)
                 with open(label_fpath, 'a') as f:
                     f.write(label_str)
+        else:
+            print(f'{img_path} does not exists!')
             tid_curr += 1
 
 
