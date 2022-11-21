@@ -49,12 +49,21 @@ def gen_labels_crowd(data_root, label_root, ann_root):
 
 
 if __name__ == '__main__':
-    data_val = '/data/yfzhang/MOT/JDE/crowdhuman/images/val'
-    label_val = '/data/yfzhang/MOT/JDE/crowdhuman/labels_with_ids/val'
-    ann_val = '/data/yfzhang/MOT/JDE/crowdhuman/annotation_val.odgt'
-    data_train = '/data/yfzhang/MOT/JDE/crowdhuman/images/train'
-    label_train = '/data/yfzhang/MOT/JDE/crowdhuman/labels_with_ids/train'
-    ann_train = '/data/yfzhang/MOT/JDE/crowdhuman/annotation_train.odgt'
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Generate png files")
+    parser.add_argument(
+         "--root_path", dest="root_path",
+        help="Root path"
+    )
+    args = parser.parse_args()
+    root_path = args.root_path
+    data_val = f'{root_path}/images/val'
+    label_val = f'{root_path}/labels_with_ids/val'
+    ann_val = f'{root_path}/annotation_val.odgt'
+    data_train = f'{root_path}/images/train'
+    label_train = f'{root_path}/crowdhuman/labels_with_ids/train'
+    ann_train = f'{root_path}/annotation_train.odgt'
     gen_labels_crowd(data_train, label_train, ann_train)
     gen_labels_crowd(data_val, label_val, ann_val)
 

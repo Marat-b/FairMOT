@@ -94,8 +94,9 @@ def eval_seq(opt, dataloader, data_type, result_filename, save_dir=None, show_im
         for t in online_targets:
             tlwh = t.tlwh
             tid = t.track_id
-            vertical = tlwh[2] / tlwh[3] > 1.6
-            if tlwh[2] * tlwh[3] > opt.min_box_area and not vertical:
+            # vertical = tlwh[2] / tlwh[3] > 1.6 # form human recognition
+            # if tlwh[2] * tlwh[3] > opt.min_box_area and not vertical:
+            if tlwh[2] * tlwh[3] > opt.min_box_area:
                 online_tlwhs.append(tlwh)
                 online_ids.append(tid)
                 #online_scores.append(t.score)
@@ -148,8 +149,9 @@ def main(opt, data_root='./images/train', det_root=None, seqs=('',), exp_name='d
         accs.append(evaluator.eval_file(result_filename))
         if save_videos:
             output_video_path = osp.join(output_dir, '{}.mp4'.format(seq))
-            cmd_str = 'C:\\soft\\ffmpeg\\bin\\ffmpeg.exe -f image2 -i {}/%05d.jpg -c:v copy {}'.format(output_dir,
-                                                                                                    output_video_path)
+            # cmd_str = 'C:\\soft\\ffmpeg\\bin\\ffmpeg.exe -f image2 -i {}/%05d.jpg -c:v copy {}'.format(output_dir,
+            #                                                                                         output_video_path)
+            cmd_str = 'ffmpeg -f image2 -i {}/%05d.jpg -c:v copy {}'.format(output_dir, output_video_path)
             os.system(cmd_str)
     timer_avgs = np.asarray(timer_avgs)
     timer_calls = np.asarray(timer_calls)
