@@ -11,7 +11,7 @@ from opts import opts
 from tracking_utils.utils import mkdir_if_missing
 from tracking_utils.log import logger
 import datasets.dataset.jde as datasets
-from track import eval_seq
+from track_potato import eval_seq
 
 
 logger.setLevel(logging.INFO)
