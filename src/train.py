@@ -47,7 +47,8 @@ def main(opt):
     dataset_root = data_config['root']
     f.close()
     transforms = T.Compose([T.ToTensor()])
-    dataset = Dataset(opt, dataset_root, trainset_paths, (1088, 608), augment=True, transforms=transforms)
+    dataset = Dataset(opt, dataset_root, trainset_paths, img_size=(opt.input_w, opt.input_h), augment=True,
+                      transforms=transforms)
     opt = opts().update_dataset_info_and_set_heads(opt, dataset)
     print(opt)
 
