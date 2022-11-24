@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import datetime
+import random
 
 import _init_paths
 
@@ -46,7 +47,14 @@ def main(opt):
     trainset_paths = data_config['train']
     dataset_root = data_config['root']
     f.close()
-    transforms = T.Compose([T.ToTensor()])
+    transforms = T.Compose([
+        T.RandomApply([ T.GaussianBlur(random.choice([1,3,5,7]), sigma=(0.1,10.0))], .5),
+        T.RandomApply([ T.ColorJitter(brightness=random.choice([0,.1,.3,.5]),
+                            contrast=random.choice([0,.1,.3,.5]),
+                            # hue=random.choice([0.1,.3,.5]),
+                            saturation=random.choice([0,.1,.3,.5])
+                            )], .5),
+        T.ToTensor()])
     dataset = Dataset(opt, dataset_root, trainset_paths, img_size=(opt.input_w, opt.input_h), augment=True,
                       transforms=transforms)
     opt = opts().update_dataset_info_and_set_heads(opt, dataset)
