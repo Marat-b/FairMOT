@@ -56,8 +56,7 @@ def main(opt):
                             saturation=random.choice([0,.1,.3,.5])
                             )], .5),
         T.ToTensor()])
-    dataset = Dataset(opt, dataset_root, trainset_paths, img_size=(opt.input_w, opt.input_h), augment=True,
-                      transforms=transforms)
+    dataset = Dataset(opt, dataset_root, trainset_paths, (1088, 608), augment=True, transforms=transforms)
     opt = opts().update_dataset_info_and_set_heads(opt, dataset)
     print(opt)
 
