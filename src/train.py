@@ -48,6 +48,7 @@ def main(opt):
     dataset_root = data_config['root']
     f.close()
     transforms = T.Compose([
+        T.ToPILImage(),
         T.RandomApply([ T.GaussianBlur(random.choice([1,3,5,7]), sigma=(0.1,10.0))], .5),
         T.RandomApply([ T.ColorJitter(brightness=random.choice([0,.1,.3,.5]),
                             contrast=random.choice([0,.1,.3,.5]),
