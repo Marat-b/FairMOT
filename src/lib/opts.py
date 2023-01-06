@@ -159,6 +159,9 @@ class opts(object):
                              help='category specific bounding box size.')
     self.parser.add_argument('--not_reg_offset', action='store_true',
                              help='not regress local offset.')
+    self.parser.add_argument('--output-dir', dest='output_dir',  type=str, default='./', help='output directory for '
+                                                                                            'saved files (' \
+                                                                              '*.pth)')
 
   def parse(self, args=''):
     if args == '':
